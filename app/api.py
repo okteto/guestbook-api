@@ -1,49 +1,31 @@
 from fastapi import FastAPI
+from app.model import Entry, retrieve_entries_in_database, insert_entry_into_database, delete_entry_from_database
 
 router = FastAPI()
 
-entries = []
-users = []
-
 @router.get("/")
-def welcome():
+async def welcome():
     return {
         "message": "Welcome to the FastAPI + Okteto series in development mode!"
     }
 
 @router.get("/entries")
-def retrieve_entries():
+async def retrieve_entries():
+    entries = await retrieve_entries_in_database()
     return {
         "entries": entries
     }
 
 @router.post("/entry")
-def add_entry(data: dict):
-    entries.append(data)
+async def add_entry(data: Entry):
+    new_entry = await insert_entry_into_database(data)
     return {
-        "message": "Entry added successfully with id {}!".format(len(entries))
+        "message": "New entry added with ID: {}".format(new_entry)
     }
 
 @router.delete("/entry/id")
-def delete_entry(id: int):
-    entries.pop(id)
+async def delete_entry(id: str):
+    await delete_entry_from_database(id)
     return {
         "message": "Entry deleted successfully"
-    }
-
-@router.post("/user/new")
-def register_user(data: dict):
-    users.append(data)
-    return {
-        "message": "User registration successful"
-    }
-
-@router.post("/user")
-def login_user(user: dict):
-    if user in users:
-        return {
-            "message": "User logged in successfully!"
-        }
-    return {
-        "message": "Invalid details!"
     }
