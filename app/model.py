@@ -1,0 +1,36 @@
+import datetime
+
+from odmantic import Model, ObjectId
+from typing import Optional
+from app.database import engine
+
+class Entry(Model):
+    name: str
+    entry: str
+    date: Optional[datetime.date] = datetime.date
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "name": "Abdul from Okteto!",
+                "entry": "Remote development environments in Okteto is the big cool thing you should try!"
+            }
+        }
+
+
+async def retrieve_entries_in_database():
+    entries = await engine.find(Entry)
+    return entries
+
+
+async def insert_entry_into_database(entry):
+    new_entry = await engine.save(entry)
+    return str(new_entry.id)
+
+
+async def delete_entry_from_database(id):
+    entries = await engine.find(Entry)
+    for e in entries:
+        if e.id == ObjectId(id):
+            await engine.delete(e)
+    return
