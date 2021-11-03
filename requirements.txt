@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+pydantic
+odmantic
+motor
+python-decouple
