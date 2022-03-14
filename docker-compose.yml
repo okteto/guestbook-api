@@ -5,6 +5,8 @@ services:
     build: .
     ports:
       - 8080:8080
+    environment:
+      - MONGO_DETAILS=${{ MONGO_DETAILS }}
 
   mongodb:
     image: bitnami/mongodb:latest
