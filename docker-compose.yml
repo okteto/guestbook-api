@@ -1,4 +1,4 @@
-version: "3"
+version: "3.8"
 
 services:
   web:
@@ -6,11 +6,19 @@ services:
     ports:
       - 8080:8080
     environment:
-      - NONGNO_DETAILS=${{ MONGO_DETAILS }}
+      - MONGO_DETAILS=mongodb://mongodb:27017/fastapi_db
+    depends_on:
+      - mongodb
 
   mongodb:
-    image: bitnami/mongodb:latest
+    image: mongo:7.0
     ports:
-      - 27017
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_DATABASE=fastapi_db
     volumes:
-      - /bitnami/mongodb
+      - mongodb_data:/data/db
+    restart: unless-stopped
+
+volumes:
+  mongodb_data:

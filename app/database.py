@@ -5,4 +5,4 @@ from odmantic import AIOEngine
 connection_details = "mongodb://mongodb:27017"
 
 client = AsyncIOMotorClient(connection_details)
-engine = AIOEngine(motor_client=client, database="guestbook")
+engine = AIOEngine(client, database="guestbook")

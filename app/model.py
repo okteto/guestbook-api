@@ -7,15 +7,7 @@ from app.database import engine
 class Entry(Model):
     name: str
     entry: str
-    date: Optional[datetime.date] = datetime.date
-
-    class Config:
-        schema_extra = {
-            "example": {
-                "name": "Abdul from Okteto!",
-                "entry": "Remote development environments in Okteto is the big cool thing you should try!"
-            }
-        }
+    date: Optional[datetime.date] = datetime.date.today()
 
 
 async def retrieve_entries_in_database():
