@@ -1,10 +1,28 @@
-name: web
-command: bash
-volumes:
-- /root/.cache/pip
-sync:
-- .:/app
-forward:
-- 8080:8080
-reverse:
-- 9000:9000
+build:
+  web:
+    context: .
+
+deploy:
+  compose: docker-compose.yml
+
+test:
+  e2e:
+    image: python:3.12-slim
+    commands:
+      - cd /okteto/src
+      - pip install --no-cache-dir -r requirements.txt
+      - echo "🧪 Running End-to-End Tests..."
+      - TEST_BASE_URL=http://web.${OKTETO_NAMESPACE}.svc.cluster.local:8080 python test_e2e.py
+      - echo "🎉 All tests completed!"
+
+dev:
+  web:
+    command: bash
+    volumes:
+    - /root/.cache/pip
+    sync:
+    - .:/app
+    forward:
+    - 8080:8080
+    reverse:
+    - 9000:9000

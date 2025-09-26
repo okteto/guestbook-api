@@ -1,21 +1,13 @@
 import datetime
 
-from odmantic import Model, ObjectId
+from odmantic import Model, ObjectId, Field
 from typing import Optional
 from app.database import engine
 
 class Entry(Model):
     name: str
     entry: str
-    date: Optional[datetime.date] = datetime.date
-
-    class Config:
-        schema_extra = {
-            "example": {
-                "name": "Abdul from Okteto!",
-                "entry": "Remote development environments in Okteto is the big cool thing you should try!"
-            }
-        }
+    date: Optional[datetime.datetime] = Field(default_factory=datetime.datetime.now)
 
 
 async def retrieve_entries_in_database():
