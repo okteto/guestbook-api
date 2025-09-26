@@ -1,13 +1,13 @@
 import datetime
 
-from odmantic import Model, ObjectId
+from odmantic import Model, ObjectId, Field
 from typing import Optional
 from app.database import engine
 
 class Entry(Model):
     name: str
     entry: str
-    date: Optional[datetime.date] = datetime.date.today()
+    date: Optional[datetime.datetime] = Field(default_factory=datetime.datetime.now)
 
 
 async def retrieve_entries_in_database():

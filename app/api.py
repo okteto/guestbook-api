@@ -23,7 +23,7 @@ async def add_entry(data: Entry):
         "message": "New entry added with ID: {}".format(new_entry)
     }
 
-@router.delete("/entry/id")
+@router.delete("/entry/{id}")
 async def delete_entry(id: str):
     await delete_entry_from_database(id)
     return {
